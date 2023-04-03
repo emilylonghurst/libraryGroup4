@@ -2,7 +2,7 @@ create database Library;
 
 use Library;
 
-# Table Creation: books, members, loans, genres, book_genres
+# Table Creation: book, member, loan, genre, book_genre
 
 -- RENAME TABLE book_genres TO book_genre;
 
@@ -38,10 +38,10 @@ CREATE TABLE loan (
     date_returned DATE,
     PRIMARY KEY (loan_id),
     FOREIGN KEY (book_id)
-        REFERENCES books (book_id)
+        REFERENCES book (book_id)
         ON DELETE CASCADE,
     FOREIGN KEY (member_id)
-        REFERENCES members (member_id)
+        REFERENCES member (member_id)
         ON DELETE CASCADE
 );
 
@@ -55,8 +55,8 @@ CREATE TABLE book_genre (
     book_id INT NOT NULL,
     genre_id INT NOT NULL,
     PRIMARY KEY (book_id, genre_id),
-    FOREIGN KEY (book_id) REFERENCES books(book_id),
-    FOREIGN KEY (genre_id) REFERENCES genres(genre_id)
+    FOREIGN KEY (book_id) REFERENCES book(book_id),
+    FOREIGN KEY (genre_id) REFERENCES genre(genre_id)
 );
 
 # Inserting filler data
