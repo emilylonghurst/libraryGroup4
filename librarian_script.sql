@@ -7,58 +7,58 @@ CALL get_member_loans('Smith');
 # (7): As a librarian, I want to be able to see number of titles checked out by a given member; limit to 7.
 
 SELECT COUNT(*)
-FROM loans
+FROM loan
 WHERE member_id = 1
 AND date_returned IS NOT NULL;
 
 # (8): As a librarian, I want to be able to see if a loan is overdue to prevent member from checking out more books
 
-select * from loans where days_overdue !=0;
+select * from loan where days_overdue !=0;
 
 # (9): As a librarian, I want to be able to see if a loan is overdue to take payment for penalties (Dev note - use the loans table)
 
-select concat(members.first_name, " ", members.last_name, " has to pay a fee of £") as penalty_member, loans.days_overdue*0.05 as penalty
-from members
-left outer join loans on loans.member_id = members.member_id where days_overdue!=0;
+select concat(member.first_name, " ", member.last_name, " has to pay a fee of £") as penalty_member, loan.days_overdue*0.05 as penalty
+from member
+left outer join loan on loan.member_id = member.member_id where days_overdue!=0;
 
 # (10): As a librarian, I want to be able to add books.
 
-insert into books(title, author_name, publication_date, publisher, description, available) VALUES
+insert into book(title, author_name, publication_date, publisher, description, available) VALUES
 ('War and Peace', 'Leo Tolstoy', '1867-01-28', 'Gottsberger', 'The novel chronicles the French invasion of Russia and the impact of the Napoleonic era on Tsarist society through the stories of five Russian aristocratic families.', 1);
 
 # (11): As a librarian, I want to be able to remove books.
 
-SELECT * FROM books;
+SELECT * FROM book;
 
 DELETE
-FROM books
+FROM book
 WHERE book_id = 4;
 
-SELECT * FROM books;
+SELECT * FROM book;
 
 # (12): As a librarian, I want to be able to update book records.
 
-UPDATE books
+UPDATE book
 SET description = 'Love, family and social status in 19th century England.'
 WHERE book_id = 1;
 
 # (13a): As a librarian, I want to be able to check in books.
 
 # check_out_book(book_id, member_id, return_date)
-select * from loans;
-CALL check_in_book(3, 6, '2023-03-19');
+select * from loan;
+CALL check_in_book(2, 5, '2023-03-19');
 
 # (13b):As a librarian, I want to be able to check out books.
 
 # check_out_book(book_id, member_id, @loan_id)
-select * from books;
+select * from book;
 CALL check_out_book(1, 3, @loan_id);
 
 # (14): As a librarian, I want to be able to add members.
 
-insert into members(first_name, last_name, email, membership_status, address) VALUES
+insert into member(first_name, last_name, email, membership_status, address) VALUES
 ('Clara', 'Johnson', 'clarajohnson@example.com', 'Active', '2 London Avenue');
-select * from members;
+select * from member;
 
 # (15):As a librarian, I want to be able to search members by last name.
 
@@ -66,13 +66,13 @@ CALL get_member_details('Smith');
 
 # (16): As a librarian, I want to be able to remove members.
 
-SELECT * FROM members;
+SELECT * FROM member;
 DELETE
-FROM members
+FROM member
 WHERE member_id = 8;
-SELECT * FROM members;
+SELECT * FROM member;
 
 # (17): As a librarian, I want to be able to update member details.
 
-select * from members;
-update members set last_name = "Rochester" where member_id = 2;
+select * from member;
+update member set last_name = "Rochester" where member_id = 2;
